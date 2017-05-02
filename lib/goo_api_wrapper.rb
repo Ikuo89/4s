@@ -13,22 +13,26 @@ class GooApiWrapper
       if result && result[:ne_list].present?
         result[:ne_list].each do |item|
           parsed_item = nil
-          case item[1]
-          when 'ART'
-            parsed_item = {artifact: item[0]}
-          when 'ORG'
-            parsed_item = {organization: item[0]}
-          when 'PSN'
-            parsed_item = {person: item[0]}
-          when 'LOC'
-            parsed_item = {location: item[0]}
-          when 'DAT'
-            parsed_item = {date: Date.parse2(item[0])}
-          when 'TIM'
-            parsed_item = {time: Time.parse(item[0])}
+          begin
+            case item[1]
+            when 'ART'
+              parsed_item = {artifact: item[0]}
+            when 'ORG'
+              parsed_item = {organization: item[0]}
+            when 'PSN'
+              parsed_item = {person: item[0]}
+            when 'LOC'
+              parsed_item = {location: item[0]}
+            when 'DAT'
+              parsed_item = {date: Date.parse2(item[0])}
+            when 'TIM'
+              parsed_item = {time: Time.parse(item[0])}
+            end
+          rescue => e
+            Rails.logger.warn e
           end
 
-          yield parsed_item
+          yield parsed_item if parsed_item.present?
         end
       end
     end

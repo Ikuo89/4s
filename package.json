@@ -39,6 +39,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devserver": "ng serve & bundle exec rails s -p 3003 & wait",
+    "boot": "git pull && bundle install --path vendor/bundle & npm i && bundle exec rake db:migrate",
     "build": "ng build --prod"
   },
   "private": true,

@@ -40,16 +40,13 @@ import { Event } from '../models/event'
                   [class.current]="date.getMonth() + 1 == month"
                   [class.today]="date.toString() == today.toString()">
                   {{date.getDate()}}
-                  <ng-container *ngFor="let event of eventList">
-                    <div *ngIf="!event.isDate && event.start.getTime() >= date.getTime() && event.start.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000)"
-                      class="event"
-                      [style.color]="event.backgroundColor" >{{('0' + event.start.getHours()).slice(-2)}}:{{('0' + event.start.getMinutes()).slice(-2)}} {{event.summary}}</div>
-                    <div *ngIf="!event.isDate && event.end.getTime() >= date.getTime() && event.end.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000)"
-                      class="event"
-                      [style.color]="event.backgroundColor" >{{('0' + event.start.getHours()).slice(-2)}}:{{('0' + event.start.getMinutes()).slice(-2)}} {{event.summary}}</div>
+                  <ng-container *ngFor="let event of targetEventList">
                     <div *ngIf="event.isDate && event.start.getTime() >= date.getTime() && event.start.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000)"
                       class="event"
                       [style.background-color]="event.backgroundColor" >{{event.summary}}</div>
+                    <div *ngIf="!event.isDate && event.start.getTime() >= date.getTime() && event.start.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000) && event.end.getTime() >= date.getTime() && event.end.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000)"
+                      class="event"
+                      [style.color]="event.backgroundColor" >{{('0' + event.start.getHours()).slice(-2)}}:{{('0' + event.start.getMinutes()).slice(-2)}} {{event.summary}}</div>
                   </ng-container>
                 </td>
               </tr>
@@ -74,7 +71,7 @@ import { Event } from '../models/event'
                 <td *ngFor="let date of weekData"
                   [class.today]="date.toString() == today.toString()"
                   [attr.data-date]="date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()">
-                  <ng-container *ngFor="let event of eventList">
+                  <ng-container *ngFor="let event of targetEventList">
                     <div *ngIf="event.isDate && event.start.getTime() >= date.getTime() && event.start.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000)"
                       class="event"
                       [style.background-color]="event.backgroundColor" >{{event.summary}}</div>
@@ -157,7 +154,7 @@ import { Event } from '../models/event'
                   <td *ngFor="let date of weekData"
                     [class.today]="date.toString() == today.toString()"
                     [attr.data-date]="date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()">
-                    <ng-container *ngFor="let event of eventList">
+                    <ng-container *ngFor="let event of targetEventList">
                       <div *ngIf="event.start.getTime() >= date.getTime() && event.end.getTime() <= (date.getTime() + 24 * 60 * 60 * 1000)"
                         class="event"
                         [style.background-color]="event.backgroundColor"
@@ -308,6 +305,7 @@ export class MainCalendarComponent implements OnInit {
   weekLastDate: Date;
   calendarList: Calendar[] = [];
   eventList: Event[] = [];
+  targetEventList: Event[] = [];
   constructor(private calendarService: CalendarService, private el: ElementRef) { }
 
   getTableHeight(selector: string): number {
@@ -319,6 +317,12 @@ export class MainCalendarComponent implements OnInit {
     this.year = date.getFullYear()
     this.month = date.getMonth() + 1
     this.monthData = this.calendarService.getMonthArray(date)
+    this.targetEventList = []
+    this.eventList.forEach(event => {
+      if (event.start.getTime() >= this.monthData[0][0].getTime() && event.end.getTime() <= (this.monthData[5][6].getTime() + 24 * 60 * 60 * 1000)) {
+        this.targetEventList.push(event)
+      }
+    })
   }
 
   setWeekArray(date: Date): void {
@@ -360,6 +364,10 @@ export class MainCalendarComponent implements OnInit {
     this.calendarService.on('add:event').subscribe(event => {
       this.eventList.push(event)
       this.eventList.sort((a, b) => a.start > b.start ? 1 : -1)
+
+      if (event.start.getTime() >= this.monthData[0][0].getTime() && event.end.getTime() <= (this.monthData[5][6].getTime() + 24 * 60 * 60 * 1000)) {
+        this.targetEventList.push(event)
+      }
     })
     this.mode = 1
     this.today = CalendarService.today

@@ -1,0 +1,10 @@
+retry_count: 5
+google:
+  client_id: <%= ENV["GOOGLE_CLIENT_ID"] %>
+  client_secret: <%= ENV["GOOGLE_CLIENT_SECRET"] %>
+  scope: 'email,https://www.googleapis.com/auth/calendar'
+goo:
+  app_id: <%= ENV["GOO_APP_ID"] %>
+line:
+  channel_secret: <%= ENV["LINE_CHANNEL_SECRET"] %>
+  channel_token: <%= ENV["LINE_CHANNEL_TOKEN"] %>

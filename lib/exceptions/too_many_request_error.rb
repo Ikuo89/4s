@@ -1,0 +1,1 @@
+class TooManyRequestError < MyWarning; end

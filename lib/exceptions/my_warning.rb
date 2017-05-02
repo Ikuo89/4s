@@ -1,0 +1,1 @@
+class MyWarning < StandardError; end

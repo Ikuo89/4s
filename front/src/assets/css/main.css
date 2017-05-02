@@ -1,0 +1,44 @@
+font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+
+body {
+  background-color: #fff;
+}
+
+.btn {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 13px;
+  border-radius: 5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  transition: all 0.1s ease !important;
+  -webkit-transition: all 0.1s ease !important;
+  moz-transition: all 0.1s ease !important;
+  -o-transition: all 0.1s ease !important;
+  -ms-transition: all 0.1s ease !important;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.5) !important;
+  -webkit-box-shadow: 0px 1px 1px rgba(0,0,0,0.5) !important;
+  -moz-box-shadow: 0px 1px 1px rgba(0,0,0,0.5) !important;
+  -ms-box-shadow: 0px 1px 1px rgba(0,0,0,0.5) !important;
+  -o-box-shadow: 0px 1px 1px rgba(0,0,0,0.5) !important;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color=rgba(0, 0, 0, 0.5),direction=180,strength=2,enabled=true)" !important;
+  line-height: 31px;
+  height: 30px;
+  cursor: pointer;
+  padding: 0px 10px;
+  border: none;
+  color: #000;
+  background-color: #DDD;
+}
+.btn:hover {
+  box-shadow: 0px 3px 5px rgba(0,0,0,0.3) !important;
+  -webkit-box-shadow: 0px 3px 5px rgba(0,0,0,0.3) !important;
+  -moz-box-shadow: 0px 3px 5px rgba(0,0,0,0.3) !important;
+  -ms-box-shadow: 0px 3px 5px rgba(0,0,0,0.3) !important;
+  -o-box-shadow: 0px 3px 5px rgba(0,0,0,0.3) !important;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color=rgba(0, 0, 0, 0.3),direction=180,strength=2,enabled=true)" !important;
+  opacity: 0.9;
+}

@@ -1,0 +1,1 @@
+class PageNotFound < StandardError; end

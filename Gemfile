@@ -52,6 +52,9 @@ gem 'config'
 # line message api sdk
 gem 'line-bot-api'
 
+# twitter api sdk
+gem 'twitter'
+
 # for cors
 gem 'rack-cors', :require => 'rack/cors'
 

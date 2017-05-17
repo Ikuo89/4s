@@ -69,4 +69,12 @@ class Demo < Thor
       TwitterUser.insert_or_update!(user)
     end
   end
+
+  desc 'search and create twitter user', 'test'
+  def twitter_user_search_and_create2
+    twitter = TwitterWrapper.new
+    twitter.user_search('萬屋いっくん') do |user|
+      TwitterUser.insert_or_update!(user)
+    end
+  end
 end

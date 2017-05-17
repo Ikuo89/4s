@@ -16,15 +16,7 @@ class TwitterWrapper
 
   def user_search(query)
     @rest.user_search(query).each do |user|
-      hashed_item = {
-        :id => user.id,
-        :screen_name => user.screen_name,
-        :name => user.name,
-        :time_zone => user.time_zone,
-        :utc_offset => user.utc_offset,
-        :profile_image_url_https => user.profile_image_url_https.to_s,
-      }
-      yield hashed_item
+      yield twitter_user_hash(user)
     end
   end
 
@@ -34,10 +26,22 @@ class TwitterWrapper
         hashed_item = {
           :id => object.id,
           :text => object.text,
-          :user_id => object.user.id,
+          :user => twitter_user_hash(object.user),
         }
         yield hashed_item
       end
     end
+  end
+
+  private
+  def twitter_user_hash(user)
+    {
+      :id => user.id,
+      :screen_name => user.screen_name,
+      :name => user.name,
+      :time_zone => user.time_zone,
+      :utc_offset => user.utc_offset,
+      :profile_image_url_https => user.profile_image_url_https.to_s,
+    }
   end
 end

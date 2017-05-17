@@ -1,4 +1,5 @@
 class TwitterUser < ApplicationRecord
+  has_many :twitter_tweets
   default_scope ->{ where(deleted: 0) }
 
   def parsed_data

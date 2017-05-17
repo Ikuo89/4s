@@ -30,7 +30,14 @@ class TwitterWrapper
 
   def stream(ids)
     @streaming.filter(:follow => ids.join(',')) do |object|
-      yield object.text if object.is_a?(Twitter::Tweet)
+      if object.is_a?(Twitter::Tweet)
+        hashed_item = {
+          :id => object.id,
+          :text => object.text,
+          :user_id => object.user.id,
+        }
+        yield hashed_item
+      end
     end
   end
 end

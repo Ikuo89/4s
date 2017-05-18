@@ -54,6 +54,12 @@ class Demo < Thor
     end
   end
 
+  desc 'twitter user', 'test'
+  def twitter_user
+    twitter = TwitterWrapper.new
+    p twitter.user(149692927)
+  end
+
   desc 'search twitter user', 'test'
   def twitter_user_search
     twitter = TwitterWrapper.new

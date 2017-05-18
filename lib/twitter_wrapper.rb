@@ -20,6 +20,11 @@ class TwitterWrapper
     end
   end
 
+  def user(query)
+    user = @rest.user(query)
+    twitter_user_hash(user) if user.present?
+  end
+
   def stream(ids)
     @streaming.filter(:follow => ids.join(',')) do |object|
       if object.is_a?(Twitter::Tweet)

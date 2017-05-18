@@ -1,5 +1,8 @@
 class TwitterUser < ApplicationRecord
   has_many :twitter_tweets
+  has_many :twitter_user_calendar_relations
+  has_many :calendars, through: :twitter_user_calendar_relations
+  has_many :users, through: :calendars
   default_scope ->{ where(deleted: 0) }
 
   def parsed_data

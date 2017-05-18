@@ -55,7 +55,10 @@ declare var LineIt: any;
           </ng-container>
           <ng-container *ngIf="state == 2">
             <section>
-              <h1>twitter</h1>
+              <h1>監視するTwitterユーザーを検索し、選択してください。</h1>
+              <div>
+                <input type="text" placeholder="ユーザー名" />
+              </div>
             </section>
           </ng-container>
         </div>
@@ -149,16 +152,22 @@ export class AddCalendarModalComponent {
 
   changeState(val: number): void {
     this.state = val;
-    if (this.el.nativeElement.querySelector('.line-it-button') || this.state != 1) return
+    if (this.el.nativeElement.querySelector('.line-it-button')) return
     this.loginService.getUser().then(user => {
-      let $lineIt = document.createElement("div");
-      $lineIt.setAttribute('data-lang', 'ja')
-      $lineIt.setAttribute('data-type', 'share-a')
-      $lineIt.setAttribute('data-url', window.location.href + '?id=' + user.identifier)
-      $lineIt.classList.add('line-it-button')
-      $lineIt.style.display = 'none'
-      this.el.nativeElement.querySelector('.line-share').appendChild($lineIt)
-      LineIt.loadButton()
+      let timerId = setInterval(() => {
+        let $lineShare = this.el.nativeElement.querySelector('.line-share')
+        if ($lineShare && $lineShare.clientWidth) {
+          let $lineIt = document.createElement("div");
+          $lineIt.setAttribute('data-lang', 'ja')
+          $lineIt.setAttribute('data-type', 'share-a')
+          $lineIt.setAttribute('data-url', window.location.href + '?id=' + user.identifier)
+          $lineIt.classList.add('line-it-button')
+          $lineIt.style.display = 'none'
+          $lineShare.appendChild($lineIt)
+          LineIt.loadButton()
+          clearInterval(timerId)
+        }
+      })
     })
   }
 

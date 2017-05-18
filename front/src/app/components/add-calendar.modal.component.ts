@@ -17,20 +17,47 @@ declare var LineIt: any;
           カレンダー追加
         </div>
         <div class="body">
-          <section>
-            <h1>1. 友達追加</h1>
-            <div>
-              QRコードまたはボタンから、「4S」を友達に追加してください。
-            </div>
-            <img src="//qr-official.line.me/L/iox8pYdRlt.png" alt="LINE-QR">
-          </section>
-          <section>
-            <h1>2. グループトークに追加</h1>
-            <div>
-              「4S」を監視するグループトークに追加して、以下ボタンからつぶやいてください。
-            </div>
-            <div class="line-share"></div>
-          </section>
+          <ng-container *ngIf="state == 0">
+            <table class="add-table">
+              <tr>
+                <th>LINEから登録する</th>
+                <th>Twitterから登録する</th>
+              </tr>
+              <tr>
+                <td>
+                  <div (click)="changeState(1)">
+                    <img src="/assets/image/LINE_Icon.png" alt="LINE">
+                  </div>
+                </td>
+                <td>
+                  <div (click)="changeState(2)">
+                    <img src="/assets/image/Twitter_Logo_Blue.png" alt="Twitter">
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </ng-container>
+          <ng-container *ngIf="state == 1">
+            <section>
+              <h1>1. 友達追加</h1>
+              <div>
+                QRコードから、「4S」を友達に追加してください。
+              </div>
+              <img src="//qr-official.line.me/L/iox8pYdRlt.png" alt="LINE-QR">
+            </section>
+            <section>
+              <h1>2. グループトークに追加</h1>
+              <div>
+                「4S」を監視するグループトークに追加して、以下ボタンからつぶやいてください。
+              </div>
+              <div class="line-share"></div>
+            </section>
+          </ng-container>
+          <ng-container *ngIf="state == 2">
+            <section>
+              <h1>twitter</h1>
+            </section>
+          </ng-container>
         </div>
         <div class="footer">
         </div>
@@ -85,18 +112,44 @@ declare var LineIt: any;
     .line-share {
       margin: 20px 0;
     }
+    .add-table {
+      width: 100%;
+      height: 100%;
+    }
+    .add-table th {
+      width: 50%;
+      height: 20px;
+      font-size: 20px;
+    }
+    .add-table td > div {
+      cursor: pointer;
+      text-align: center;
+    }
+    .add-table td > div:hover {
+      opacity: 0.7;
+    }
+    .add-table td > div > img {
+      width: 70%;
+      margin: 30px;
+    }
   `],
   providers: []
 })
 export class AddCalendarModalComponent {
   isShow: boolean = false;
+  state: number = 0;
   constructor(private el: ElementRef,
               private cookieService: CookieService,
               private loginService: LoginService) { }
 
   open(): void {
     this.isShow = true;
-    if (this.el.nativeElement.querySelector('.line-it-button')) return
+    this.state = 0;
+  }
+
+  changeState(val: number): void {
+    this.state = val;
+    if (this.el.nativeElement.querySelector('.line-it-button') || this.state != 1) return
     this.loginService.getUser().then(user => {
       let $lineIt = document.createElement("div");
       $lineIt.setAttribute('data-lang', 'ja')

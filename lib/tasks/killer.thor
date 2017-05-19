@@ -2,9 +2,9 @@ require 'thor/rails'
 require './config/environment'
 
 class Killer < Thor
-  desc 'killer', 'process killer'
-  def killer
-    files = Dir[Rails.root.join('tmp', 'pids', '*.lock')]
+  desc 'kill', 'process killer'
+  def kill(name = '*')
+    files = Dir[File.expand_path('../../../', __FILE__) + "/tmp/pids/#{name}.lock"]
     files.each do |file_name|
       next unless FileTest.file?(file_name)
 
@@ -27,9 +27,5 @@ class Killer < Thor
         puts "pid[#{pid}] not exists"
       end
     end
-
-    command = "rm -rf #{tmp_dir}/*"
-    puts command
-    %x(#{command})
   end
 end

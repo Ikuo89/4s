@@ -369,6 +369,10 @@ export class MainCalendarComponent implements OnInit {
         this.targetEventList.push(event)
       }
     })
+    this.calendarService.on('reload:calendar').subscribe(() => {
+      this.calendarList = []
+      this.eventList = []
+    })
     this.mode = 1
     this.today = CalendarService.today
     this.setWeekArray(CalendarService.today)

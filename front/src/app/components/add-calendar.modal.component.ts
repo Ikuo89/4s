@@ -2,6 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { LoginService } from '../services/login.service';
 import { TwitterService } from '../services/twitter.service';
+import { CalendarService } from '../services/calendar.service';
 import { TwitterUser } from '../models/twitter_user';
 
 var s = document.createElement("script");
@@ -178,6 +179,7 @@ export class AddCalendarModalComponent {
   constructor(private el: ElementRef,
               private cookieService: CookieService,
               private loginService: LoginService,
+              private calendarService: CalendarService,
               private twitterService: TwitterService) { }
 
   open(): void {
@@ -218,6 +220,7 @@ export class AddCalendarModalComponent {
     this.twitterService.addUser(user.twitterComUserId)
       .then(user => {
         this.close()
+        this.calendarService.trigger('reload:calendar')
       })
   }
 

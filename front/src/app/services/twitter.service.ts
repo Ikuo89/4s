@@ -12,4 +12,9 @@ export class TwitterService {
     return this.apiService.get(`/twitter_users/search?q=${query}`)
       .then(response => response as TwitterUser[]);
   }
+
+  addUser(twitterId: string): Promise<TwitterUser[]> {
+    return this.apiService.post(`/twitter_users/`, { id: twitterId })
+      .then(response => response as TwitterUser);
+  }
 }

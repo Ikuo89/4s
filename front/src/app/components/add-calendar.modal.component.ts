@@ -61,9 +61,8 @@ declare var LineIt: any;
               <div>
                 <input type="text" (keyup)="onKey($event)" placeholder="ユーザー名" />
                 <ul class="twitter-user-list">
-                  <li *ngFor="let twitterUser of twitterUsers">
+                  <li *ngFor="let twitterUser of twitterUsers" (click)="selectTwitterUser(twitterUser)">
                     <img [src]="twitterUser.profileImageUrlHttps" alt="userIcon" align="top"/>
-                    <input type="hidden" [(ngModel)]="twitterUser.twitterComUserId" />
                     <span class="name">{{twitterUser.name}}</span>
                     <span class="screen_name">@{{twitterUser.screenName}}</span>
                   </li>
@@ -213,6 +212,13 @@ export class AddCalendarModalComponent {
       this.twitterService.search(e.target.value)
         .then(users => this.twitterUsers = users)
     }, 500)
+  }
+
+  selectTwitterUser(user: TwitterUser): void {
+    this.twitterService.addUser(user.twitterComUserId)
+      .then(user => {
+        this.close()
+      })
   }
 
   cancelClose(e): void {

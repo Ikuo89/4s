@@ -2,22 +2,25 @@ class TwitterUsersController < ApplicationController
   before_action Login.new
 
   def search
-    result = []
     q = params[:q]
-    if q.present?
-      TwitterService.user_search(q) do |user|
-        result << user.to_h.camelize_keys(:lower)
-      end
+    raise ActionController::BadRequest if q.blank?
+
+    result = []
+    TwitterService.user_search(q) do |user|
+      result << user.to_h.camelize_keys(:lower)
     end
     render json: result
   end
 
   def create
-    id = params[:id]
+    id = params[:id].to_i
     raise ActionController::BadRequest if id.blank?
 
-    user_hash = twitter.user(id)
-    twitter_user = TwitterUser.insert_or_update!(user_hash) if user_hash.present?
+    twitter_user = begin
+      TwitterService.create(id)
+    rescue TwitterUserNotFoundError => e
+      raise ActionController::BadRequest
+    end
 
     calendar_wrapper = GoogleCalendarWrapper.new(user.token, user.refresh_token)
     if twitter_user.users.find_by(id: user.id).blank?

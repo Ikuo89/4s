@@ -22,6 +22,15 @@ export class ApiService {
       .catch(this.handleError);
   }
 
+  post(path, data): Promise<any> {
+    let headers = new Headers()
+    headers.append('X-4S-Token', this.token())
+    return this.http.post(this.apiRoot + path, data, { headers: headers })
+      .toPromise()
+      .then(response => response.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error(error.message || error);
     return Promise.reject(error.message || error);

@@ -17,6 +17,7 @@ import { ApiService } from './services/api.service';
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
 import { CalendarService } from './services/calendar.service';
+import { TwitterService } from './services/twitter.service';
 import { Broadcaster } from './services/broadcaster';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -49,6 +50,7 @@ export function cookieServiceFactory() {
     LoginService,
     UserService,
     CalendarService,
+    TwitterService,
     Broadcaster
   ],
   bootstrap: [AppComponent]

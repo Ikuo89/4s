@@ -107,12 +107,12 @@ export class CalendarService {
   }
 
   fetch(): Promise<void> {
-    return this.apiService.call('/calendars')
+    return this.apiService.get('/calendars')
       .then(calendarsResponse => {
         CalendarService.calendars = calendarsResponse as Calendar[]
         CalendarService.calendars.forEach(calendar => {
           this.broadcaster.broadcast('add:calendar', calendar)
-          this.apiService.call(`/calendars/${calendar.id}/events`).then(eventsResponse => {
+          this.apiService.get(`/calendars/${calendar.id}/events`).then(eventsResponse => {
             CalendarService.events = eventsResponse as Event[]
             CalendarService.events.forEach(event => {
               event.start = new Date(event.start.toString());

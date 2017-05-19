@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     resources :calendars, only: [:index] do
       resources :events, only: [:index]
     end
+
+    get '/twitter_users/search', to: 'twitter_users#search'
+    resources :twitter_users, only: [:create]
   end
 
   scope controller: :omniauth, as: :omniauth, path: :omniauth do

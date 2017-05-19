@@ -56,5 +56,12 @@ class TwitterUser < ApplicationRecord
       model.save!
       model
     end
+
+    def parse(hash_item)
+      self.new(
+        twitter_com_user_id: hash_item[:id],
+        data: JSON.generate(hash_item),
+      )
+    end
   end
 end

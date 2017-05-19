@@ -5,9 +5,8 @@ class TwitterUsersController < ApplicationController
     result = []
     q = params[:q]
     if q.present?
-      twitter = TwitterWrapper.new
-      twitter.user_search(q) do |user|
-        result << user
+      TwitterService.user_search(q) do |user|
+        result << user.to_h.camelize_keys(:lower)
       end
     end
     render json: result
@@ -31,5 +30,7 @@ class TwitterUsersController < ApplicationController
       user_calendars_relation = UserCalendarsRelation.new(user_id: user.id, calendar_id: calendar.id)
       user_calendars_relation.save!
     end
+
+    render json: twitter_user.to_h
   end
 end

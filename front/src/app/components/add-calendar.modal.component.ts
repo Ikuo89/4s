@@ -1,6 +1,8 @@
 import { Component, ElementRef } from '@angular/core';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { LoginService } from '../services/login.service';
+import { TwitterService } from '../services/twitter.service';
+import { TwitterUser } from '../models/twitter_user';
 
 var s = document.createElement("script");
 s.type = "text/javascript";
@@ -57,7 +59,15 @@ declare var LineIt: any;
             <section>
               <h1>監視するTwitterユーザーを検索し、選択してください。</h1>
               <div>
-                <input type="text" placeholder="ユーザー名" />
+                <input type="text" (keyup)="onKey($event)" placeholder="ユーザー名" />
+                <ul class="twitter-user-list">
+                  <li *ngFor="let twitterUser of twitterUsers">
+                    <img [src]="twitterUser.profileImageUrlHttps" alt="userIcon" align="top"/>
+                    <input type="hidden" [(ngModel)]="twitterUser.twitterComUserId" />
+                    <span class="name">{{twitterUser.name}}</span>
+                    <span class="screen_name">@{{twitterUser.screenName}}</span>
+                  </li>
+                </ul>
               </div>
             </section>
           </ng-container>
@@ -135,15 +145,41 @@ declare var LineIt: any;
       width: 70%;
       margin: 30px;
     }
+    .twitter-user-list {
+      list-style: none;
+      overflow-y: scroll;
+      max-height: 500px;
+      margin-top: 10px;
+    }
+    .twitter-user-list > li {
+      cursor: pointer;
+      line-height: 30px;
+    }
+    .twitter-user-list > li:hover {
+      opacity: 0.7;
+    }
+    .twitter-user-list > li > img{
+      width: 30px;
+      vertical-align: top;
+    }
+    .twitter-user-list > li > span {
+      font-size: 14px;
+    }
+    .twitter-user-list > li > .screen_name {
+      color: #657786;
+    }
   `],
   providers: []
 })
 export class AddCalendarModalComponent {
   isShow: boolean = false;
   state: number = 0;
+  twitterUsers: TwitterUser[] = [];
+  private searchTimerId: any;
   constructor(private el: ElementRef,
               private cookieService: CookieService,
-              private loginService: LoginService) { }
+              private loginService: LoginService,
+              private twitterService: TwitterService) { }
 
   open(): void {
     this.isShow = true;
@@ -169,6 +205,14 @@ export class AddCalendarModalComponent {
         }
       })
     })
+  }
+
+  onKey(e): void {
+    clearTimeout(this.searchTimerId)
+    this.searchTimerId = setTimeout(() => {
+      this.twitterService.search(e.target.value)
+        .then(users => this.twitterUsers = users)
+    }, 500)
   }
 
   cancelClose(e): void {

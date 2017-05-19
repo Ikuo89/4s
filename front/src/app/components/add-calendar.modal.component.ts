@@ -29,12 +29,12 @@ declare var LineIt: any;
               <tr>
                 <td>
                   <div (click)="changeState(1)">
-                    <img src="/assets/image/LINE_Icon.png" alt="LINE">
+                    <img src="assets/image/LINE_Icon.png" alt="LINE">
                   </div>
                 </td>
                 <td>
                   <div (click)="changeState(2)">
-                    <img src="/assets/image/Twitter_Logo_Blue.png" alt="Twitter">
+                    <img src="assets/image/Twitter_Logo_Blue.png" alt="Twitter">
                   </div>
                 </td>
               </tr>

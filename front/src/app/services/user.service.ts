@@ -9,7 +9,7 @@ export class UserService {
   constructor(private apiService: ApiService) { }
 
   getUser(): Promise<User> {
-    return this.apiService.call('/user')
+    return this.apiService.get('/user')
       .then(response => response as User);
   }
 }

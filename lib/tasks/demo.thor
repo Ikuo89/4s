@@ -45,4 +45,42 @@ class Demo < Thor
   def goo_test(text)
     p ScheduleParser.parse(text)
   end
+
+  desc 'tweetstream', 'test'
+  def tweetstream
+    twitter = TwitterWrapper.new
+    twitter.stream([149692927]) do |text|
+      p text
+    end
+  end
+
+  desc 'twitter user', 'test'
+  def twitter_user
+    twitter = TwitterWrapper.new
+    p twitter.user(149692927)
+  end
+
+  desc 'search twitter user', 'test'
+  def twitter_user_search
+    twitter = TwitterWrapper.new
+    twitter.user_search('news_pia') do |user|
+      p user
+    end
+  end
+
+  desc 'search and create twitter user', 'test'
+  def twitter_user_search_and_create
+    twitter = TwitterWrapper.new
+    twitter.user_search('news_pia') do |user|
+      TwitterUser.insert_or_update!(user)
+    end
+  end
+
+  desc 'search and create twitter user', 'test'
+  def twitter_user_search_and_create2
+    twitter = TwitterWrapper.new
+    twitter.user_search('萬屋いっくん') do |user|
+      TwitterUser.insert_or_update!(user)
+    end
+  end
 end

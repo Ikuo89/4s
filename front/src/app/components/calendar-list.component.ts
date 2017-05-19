@@ -43,5 +43,8 @@ export class CalendarListComponent implements OnInit{
 
   ngOnInit(): void {
     this.calendarService.on('add:calendar').subscribe(calendar => this.calendarList.push(calendar))
+    this.calendarService.on('reload:calendar').subscribe(() => {
+      this.calendarList = []
+    })
   }
 }

@@ -13,10 +13,19 @@ export class ApiService {
   }
 
   private apiRoot = `${environment.apiRoot}/api`;
-  call(path): Promise<any> {
+  get(path): Promise<any> {
     let headers = new Headers()
     headers.append('X-4S-Token', this.token())
     return this.http.get(this.apiRoot + path, { headers: headers })
+      .toPromise()
+      .then(response => response.json())
+      .catch(this.handleError);
+  }
+
+  post(path, data): Promise<any> {
+    let headers = new Headers()
+    headers.append('X-4S-Token', this.token())
+    return this.http.post(this.apiRoot + path, data, { headers: headers })
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);

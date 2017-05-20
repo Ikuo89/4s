@@ -14,7 +14,7 @@ class TwitterFetch < Thor
       twitter.stream(user_ids) do |tweet_hash|
         twitter_user = TwitterUser.insert_or_update!(tweet_hash[:user])
         if twitter_user
-          tweet = twitter_user.twitter_tweets.build(text: tweet_hash[:text].utf8mb4_encode)
+          tweet = twitter_user.twitter_tweets.build(text: tweet_hash[:text])
           tweet.save!
         end
 

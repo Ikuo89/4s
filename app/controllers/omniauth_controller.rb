@@ -84,7 +84,7 @@ class OmniauthController < ApplicationController
           end
 
           if line_room.calendars.present?
-            event = Event.parse_from_text(line.text)
+            event = Event.parse_from_text(line.text.utf8mb4_encode)
             if event.present?
               line_room.calendars.each do |calendar|
                 user = calendar.user

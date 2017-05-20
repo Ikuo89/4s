@@ -30,7 +30,7 @@ class TwitterWrapper
       if object.is_a?(Twitter::Tweet)
         hashed_item = {
           :id => object.id,
-          :text => object.text,
+          :text => object.text.utf8mb4_encode,
           :user => twitter_user_hash(object.user),
         }
         yield hashed_item
@@ -43,7 +43,7 @@ class TwitterWrapper
     {
       :id => user.id,
       :screen_name => user.screen_name,
-      :name => user.name,
+      :name => user.name.utf8mb4_encode,
       :time_zone => user.time_zone,
       :utc_offset => user.utc_offset,
       :profile_image_url_https => user.profile_image_url_https.to_s,

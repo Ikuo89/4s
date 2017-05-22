@@ -186,12 +186,12 @@ class GoogleCalendarWrapper
   def event_to_hash(item)
     hashed_item = {
       :id => item.id,
-      :summary => item.summary.utf8mb4_encode,
-      :description => item.description.utf8mb4_encode,
+      :summary => item.summary&.utf8mb4_encode,
+      :description => item.description&.utf8mb4_encode,
       :color_id => item.color_id,
-      :location => item.location.utf8mb4_encode,
+      :location => item.location&.utf8mb4_encode,
     }
-    hashed_item[:organizer] = item.organizer&.display_name.utf8mb4_encode
+    hashed_item[:organizer] = item.organizer&.display_name&.utf8mb4_encode
     hashed_item[:time_zone] = item.start&.time_zone
     hashed_item[:start] = item.start&.date_time
     hashed_item[:start] = item.start&.date if hashed_item[:start].blank?

@@ -10,7 +10,7 @@ if @environment == 'production'
     thor "killer:kill twitter_fetch_watch"
   end
 
-  every 30.minutes, :roles => [:job] do
+  every 10.minutes, :roles => [:job] do
     thor "twitter_fetch:watch"
   end
 end

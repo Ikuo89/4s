@@ -36,8 +36,8 @@ class GoogleCalendarWrapper
     call_list(@service.method(:list_calendar_lists), parameters) do |item|
       hashed_item = {
         :id => item.id,
-        :summary => item.summary.utf8mb4_encode,
-        :description => item.description.utf8mb4_encode,
+        :summary => item.summary&.utf8mb4_encode,
+        :description => item.description&.utf8mb4_encode,
         :color_id => item.color_id,
         :background_color => item.background_color,
         :foreground_color => item.foreground_color,

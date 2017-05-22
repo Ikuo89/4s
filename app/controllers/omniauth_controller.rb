@@ -59,10 +59,11 @@ class OmniauthController < ApplicationController
           line_room = LineRoom.find_or_initialize_by(line_me_room_id: line.room_id)
           line_room.save!
 
-          text = line_room.line_room_talks.build(text: line.text)
-          text.save!
+          text = text.utf8mb4_encode
+          talk = line_room.line_room_talks.build(text: line.text)
+          talk.save!
 
-          if /[?&]id=(?<identifier>[^&]+)/ =~ line.text
+          if /[?&]id=(?<identifier>[^&]+)/ =~ text
             user = User.analyze_identifier(identifier)
             if user.present?
               calendar_wrapper = GoogleCalendarWrapper.new(user.token, user.refresh_token)
@@ -84,7 +85,7 @@ class OmniauthController < ApplicationController
           end
 
           if line_room.calendars.present?
-            event = Event.parse_from_text(line.text.utf8mb4_encode)
+            event = Event.parse_from_text(text)
             if event.present?
               line_room.calendars.each do |calendar|
                 user = calendar.user

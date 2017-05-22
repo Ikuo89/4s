@@ -1,7 +1,4 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :omniauthable
   has_many :user_calendars_relations
   has_many :calendars, through: :user_calendars_relations
   default_scope ->{ where(deleted: 0) }

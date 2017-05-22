@@ -13,14 +13,11 @@ Rails.application.routes.draw do
 
   scope controller: :omniauth, as: :omniauth, path: :omniauth do
     get :google_redirect
+    get :google_callback
   end
 
   scope controller: :omniauth, as: :line, path: :line do
     get :callback, action: :line_callback
     post :callback, action: :line_callback
   end
-
-  devise_for :users, controllers: {
-    omniauth_callbacks: "omniauth"
-  }
 end

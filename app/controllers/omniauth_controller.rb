@@ -1,21 +1,57 @@
+require 'google/api_client/client_secrets'
+require 'google/apis/oauth2_v2'
+
 class OmniauthController < ApplicationController
   def google_redirect
     return_url = params[:return_url]
 
-    auth_url = user_google_oauth2_omniauth_authorize_path
-    auth_url += "?" + URI.encode_www_form(state: URI.encode_www_form(:return_url => return_url))
-    redirect_to auth_url
+    client_secrets = Google::APIClient::ClientSecrets.new(
+      web: {
+        client_id: Settings.google.client_id,
+        client_secret: Settings.google.client_secret,
+      }
+    )
+    auth_client = client_secrets.to_authorization
+    auth_client.update!(
+      :scope => Settings.google.scope.split(','),
+      :redirect_uri => "#{Settings.app.full_host}/omniauth/google_callback",
+      :additional_parameters => {
+        "access_type" => "offline",
+        "include_granted_scopes" => "true"
+      },
+      :state => URI.encode_www_form(:return_url => return_url)
+    )
+
+    auth_uri = auth_client.authorization_uri.to_s
+    redirect_to auth_client.authorization_uri.to_s
   end
 
-  def google_oauth2
+  def google_callback
     state = Hash.new
     params_state = params['state']
     if params_state && params_state.length
       state = Hash[URI::decode_www_form(params_state)]
     end
 
-    auth = request.env["omniauth.auth"]
-    user = User.find_by(email: auth.info.email)
+    client_secrets = Google::APIClient::ClientSecrets.new(
+      web: {
+        client_id: Settings.google.client_id,
+        client_secret: Settings.google.client_secret,
+      }
+    )
+    auth_client = client_secrets.to_authorization
+    auth_client.update!(
+      :scope => Settings.google.scope.split(','),
+      :redirect_uri => "#{Settings.app.full_host}/omniauth/google_callback",
+      :code => params['code']
+    )
+    auth_client.fetch_access_token!
+
+    oauth2 = Google::Apis::Oauth2V2::Oauth2Service.new
+    oauth2.authorization = auth_client
+    user_info = oauth2.get_userinfo
+
+    user = User.find_by(email: user_info.email)
 
     success = false
     if user
@@ -29,14 +65,14 @@ class OmniauthController < ApplicationController
 
     unless success
       begin
-        calendar = GoogleCalendarWrapper.new(auth.credentials.token, auth.credentials.refresh_token)
+        calendar = GoogleCalendarWrapper.new(auth_client.access_token, auth_client.refresh_token)
         raise Signet::AuthorizationError.new unless calendar.token_enable?
 
         if user
-          user.image = auth.info.image
-          user.update_credentials!(auth.credentials.token, auth.credentials.refresh_token)
+          user.image = user_info.picture
+          user.update_credentials!(auth_client.access_token, auth_client.refresh_token)
         else
-          user = User.insert!(auth.info.email, auth.info.image, auth.credentials.token, auth.credentials.refresh_token)
+          user = User.insert!(user_info.email, user_info.picture, auth_client.access_token, auth_client.refresh_token)
         end
       rescue Signet::AuthorizationError => e
         failed(state) and return

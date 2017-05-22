@@ -38,11 +38,6 @@ gem 'google-api-client'
 # Database Foreign Key
 gem 'foreigner'
 
-# Login Tool
-gem 'devise'
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
-
 # alternative of rake
 gem 'thor-rails'
 

@@ -45,12 +45,12 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ikuo89/schedule-management.git"
+    "url": "git+https://github.com/Ikuo89/4s.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Ikuo89/schedule-management/issues"
+    "url": "https://github.com/Ikuo89/4s/issues"
   },
-  "homepage": "https://github.com/Ikuo89/schedule-management#readme"
+  "homepage": "https://github.com/Ikuo89/4s#readme"
 }

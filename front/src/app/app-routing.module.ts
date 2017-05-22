@@ -6,7 +6,8 @@ import { MainComponent }   from './components/main.component';
 
 const routes: Routes = [
   { path: 'login',  component: LoginComponent },
-  { path: 'calendar',  component: MainComponent }
+  { path: 'calendar',  component: MainComponent },
+  { path: '',  redirectTo: 'login', pathMatch: 'full' },
 ];
 @NgModule({
   imports: [ RouterModule.forRoot(routes, { useHash: true }) ],

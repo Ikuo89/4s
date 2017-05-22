@@ -110,7 +110,7 @@ class OmniauthController < ApplicationController
     def failed(state)
       if state['return_url']&.is_url?
         return_url = state['return_url']
-        redirect_to return_url.append_query(code: 'EUSR0001')
+        redirect_to return_url.append_query(error: 'invalid_authenticity')
       else
         render :json => { status: 400, message: 'authorization failed' }
       end

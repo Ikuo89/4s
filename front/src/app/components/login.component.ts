@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 import { LoginService } from '../services/login.service';
+import { Util } from '../util';
 
 @Component({
   template: `
     <div class="main">
+      <div class="notification" *ngIf="error == 'invalid_authenticity'">
+        Googleの認証に失敗しました。<br />お手数ですが<a href="https://myaccount.google.com/permissions" target="_blank">こちら</a>よりGoogleから4sへの連携を解除した上で<br />再度ログインをお試しください。
+      </div>
       <div>
         <div class="logo-container">
           <section class="logo">4s</section>
@@ -62,11 +66,24 @@ import { LoginService } from '../services/login.service';
       width: 300px;
       margin: 30px;
     }
+    .notification {
+      background-color: #EEE;
+      font-size: 12px;
+      text-align: center;
+      border: 1px solide #AAA;
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      padding: 10px;
+      line-height: 20px;
+    }
   `],
   providers: []
 })
 export class LoginComponent implements OnInit{
   loginUrl: string;
+  error: string;
 
   constructor(private loginService: LoginService) { }
 
@@ -76,5 +93,10 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.getLoginUrl();
+
+    var query = Util.getQueryStrings();
+    if (query['error']) {
+      this.error = query['error']
+    }
   }
 }

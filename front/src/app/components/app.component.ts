@@ -35,6 +35,7 @@ export class AppComponent implements OnInit{
       .then(function (user) {
         self.router.navigate(['/calendar']);
       }, function (error) {
+        history.pushState(null, null, location.pathname)
         self.router.navigate(['/login']);
       });
   }

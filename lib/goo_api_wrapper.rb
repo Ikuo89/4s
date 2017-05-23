@@ -39,7 +39,7 @@ class GooApiWrapper
 
     private
     def app_id
-      Settings[:goo][:app_id]
+      Settings.goo.app_id
     end
 
     def call_query(url, form_data)

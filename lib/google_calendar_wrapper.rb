@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'google/apis/calendar_v3'
 class GoogleCalendarWrapper
-  MAX_RETRY_COUNT = Settings[:retry_count]
+  MAX_RETRY_COUNT = Settings.retry_count
   INITIAL_TOKEN = :initial_token
 
   def initialize(token, refresh_token)
@@ -10,9 +10,9 @@ class GoogleCalendarWrapper
     authorization.refresh_token = refresh_token
     authorization.token_credential_uri = 'https://accounts.google.com/o/oauth2/token'
     authorization.audience = 'https://accounts.google.com/o/oauth2/token'
-    authorization.client_id = Settings[:google][:client_id]
-    authorization.client_secret = Settings[:google][:client_secret]
-    authorization.scope = Settings[:google][:scope]
+    authorization.client_id = Settings.google.client_id
+    authorization.client_secret = Settings.google.client_secret
+    authorization.scope = Settings.google.scope
 
     @service = Google::Apis::CalendarV3::CalendarService.new
     @service.authorization = authorization

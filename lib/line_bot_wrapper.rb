@@ -33,8 +33,8 @@ class LineBotWrapper
     def client
       return @client if @client.present?
       @client = Line::Bot::Client.new { |config|
-        config.channel_secret = Settings[:line][:channel_secret]
-        config.channel_token = Settings[:line][:channel_token]
+        config.channel_secret = Settings.line.channel_secret
+        config.channel_token = Settings.line.channel_token
       }
     end
 

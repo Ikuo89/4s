@@ -1,5 +1,5 @@
 class Encryptor
-  APP_SECRET = Settings[:app][:secret]
+  APP_SECRET = Settings.app.secret
   class << self
     def app_secret
       APP_SECRET

@@ -60,14 +60,19 @@ declare var LineIt: any;
             <section>
               <h1>監視するTwitterユーザーを検索し、選択してください。</h1>
               <div>
-                <input type="text" (keyup)="onKey($event)" placeholder="ユーザー名" />
-                <ul class="twitter-user-list">
-                  <li *ngFor="let twitterUser of twitterUsers" (click)="selectTwitterUser(twitterUser)">
-                    <img [src]="twitterUser.profileImageUrlHttps" alt="userIcon" align="top"/>
-                    <span class="name">{{twitterUser.name}}</span>
-                    <span class="screen_name">@{{twitterUser.screenName}}</span>
-                  </li>
-                </ul>
+                <input type="text" (keyup)="onKey($event)" [(ngModel)]="twitterSearchQuery" placeholder="ユーザー名" />
+                <div class="twitter-user-list-wrapper">
+                  <div class="loader-wrapper" *ngIf="showLoading"><div class="loader">
+                    <loading></loading>
+                  </div></div>
+                  <ul class="twitter-user-list">
+                    <li *ngFor="let twitterUser of twitterUsers" (click)="selectTwitterUser(twitterUser)">
+                      <img [src]="twitterUser.profileImageUrlHttps" alt="userIcon" align="top"/>
+                      <span class="name">{{twitterUser.name}}</span>
+                      <span class="screen_name">@{{twitterUser.screenName}}</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </section>
           </ng-container>
@@ -145,6 +150,25 @@ declare var LineIt: any;
       width: 70%;
       margin: 30px;
     }
+    .twitter-user-list-wrapper {
+      position: relative;
+      min-height: 300px;
+    }
+    .twitter-user-list-wrapper > .loader-wrapper {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(200, 200, 200, 0.7);
+    }
+    .twitter-user-list-wrapper > .loader-wrapper > .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+    }
     .twitter-user-list {
       list-style: none;
       overflow-y: scroll;
@@ -175,6 +199,8 @@ export class AddCalendarModalComponent {
   isShow: boolean = false;
   state: number = 0;
   twitterUsers: TwitterUser[] = [];
+  twitterSearchQuery: string = '';
+  showLoading: boolean = false;
   private searchTimerId: any;
   constructor(private el: ElementRef,
               private cookieService: CookieService,
@@ -185,6 +211,9 @@ export class AddCalendarModalComponent {
   open(): void {
     this.isShow = true;
     this.state = 0;
+    this.twitterSearchQuery = '';
+    this.showLoading = false;
+    this.twitterUsers = [];
   }
 
   changeState(val: number): void {
@@ -209,16 +238,23 @@ export class AddCalendarModalComponent {
   }
 
   onKey(e): void {
+    this.showLoading = true;
     clearTimeout(this.searchTimerId)
     this.searchTimerId = setTimeout(() => {
+      if (!e.target.value) return;
       this.twitterService.search(e.target.value)
-        .then(users => this.twitterUsers = users)
-    }, 500)
+        .then(users => {
+          this.twitterUsers = users
+          this.showLoading = false;
+        })
+    }, 400)
   }
 
   selectTwitterUser(user: TwitterUser): void {
+    this.showLoading = true;
     this.twitterService.addUser(user.twitterComUserId)
       .then(user => {
+        this.showLoading = false;
         this.close()
         this.calendarService.trigger('reload:calendar')
       })

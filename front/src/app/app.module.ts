@@ -13,6 +13,7 @@ import { MiniCalendarComponent } from './components/mini-calendar.component';
 import { MainCalendarComponent } from './components/main-calendar.component';
 import { CalendarListComponent } from './components/calendar-list.component';
 import { AddCalendarModalComponent } from './components/add-calendar.modal.component';
+import { LoadingComponent } from './components/loading.component';
 import { ApiService } from './services/api.service';
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
@@ -29,6 +30,7 @@ export function cookieServiceFactory() {
 @NgModule({
   declarations: [
     AppComponent,
+    LoadingComponent,
     FooterComponent,
     LoginComponent,
     MainComponent,

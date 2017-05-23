@@ -20,7 +20,7 @@ describe "schedule_parser" do
 EOS
 
     schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.parse(date.strftime('%m/%d 14:00')), Time.parse(date.strftime('%m/%d 18:15'))])
+    expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d 14:00')), Time.zone.parse(date.strftime('%m/%d 18:15'))])
     expect(schedule[:title]).to include('新中野')
   end
 
@@ -32,7 +32,7 @@ EOS
 EOS
 
     schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.parse(date.strftime('%m/%d'))])
+    expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d'))])
     expect(schedule[:title]).to include('野沢')
   end
 
@@ -40,7 +40,7 @@ EOS
     original = "#{date.strftime('%-m/%-d')} 10:30〜 スタジオノア新宿のB3スタジオで予約取りましたー"
 
     schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.parse(date.strftime('%m/%d 10:30'))])
+    expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d 10:30'))])
     expect(schedule[:title]).to include('新宿')
   end
 
@@ -48,7 +48,7 @@ EOS
     original = "今日の夜7時からは菜々美がshowroomやりますよ！！見てくださいね〜"
 
     schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.parse(Time.now.strftime('%m/%d 19:00'))])
+    expect(schedule[:datetime]).to eq([Time.zone.parse(Time.now.strftime('%m/%d 19:00'))])
   end
 
   it 'TWITTER2' do
@@ -65,6 +65,6 @@ AKB48で出演させて頂くのですが
 EOS
 
     schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.parse((Date.today + 1).strftime('%m/%d'))])
+    expect(schedule[:datetime]).to eq([Time.zone.parse((Date.today + 1).strftime('%m/%d'))])
   end
 end

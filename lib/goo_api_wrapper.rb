@@ -26,7 +26,7 @@ class GooApiWrapper
             when 'DAT'
               parsed_item = {date: Date.parse2(item[0])}
             when 'TIM'
-              parsed_item = {time: Time.parse(item[0])}
+              parsed_item = {time: Time.zone.parse(item[0])}
             end
           rescue => e
             Rails.logger.warn e

@@ -1,6 +1,6 @@
 class ScheduleParser
   class << self
-    def parse(original)
+    def parse(original, time_zone = 'UTC')
       text = original
       text = text.gsub(/[\n\r]/, ' ')
       text = text.gsub(/(?<hour>\d{2})(?<minutes>\d{2})[ 　]*[-〜~]/, '\k<hour>:\k<minutes>')
@@ -30,10 +30,10 @@ class ScheduleParser
 
       if response[:date].present? && response[:time].present?
         response[:time].length.times do |i|
-          schedule[:datetime] << Time.parse(response[:date][0].strftime('%F') + ' ' + response[:time][i].strftime('%T'))
+          schedule[:datetime] << (response[:date][0].strftime('%F') + ' ' + response[:time][i].strftime('%T')).in_time_zone(time_zone)
         end
       elsif response[:date].present?
-        schedule[:datetime] << Time.parse(response[:date][0].strftime('%F'))
+        schedule[:datetime] << response[:date][0].strftime('%F').in_time_zone(time_zone)
       end
 
       locations = []

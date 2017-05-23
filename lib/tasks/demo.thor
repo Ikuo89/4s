@@ -46,6 +46,11 @@ class Demo < Thor
     p ScheduleParser.parse(text)
   end
 
+  desc 'goo_test [text]', 'test'
+  def goo_test2(text)
+    p ScheduleParser.parse(text, 'Tokyo')
+  end
+
   desc 'tweetstream', 'test'
   def tweetstream
     twitter = TwitterWrapper.new

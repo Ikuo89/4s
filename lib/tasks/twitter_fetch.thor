@@ -20,7 +20,7 @@ class TwitterFetch < Thor
         tweet.save!
 
         if twitter_user.calendars.present?
-          event = Event.parse_from_text(tweet_hash[:text])
+          event = Event.parse_from_text(tweet_hash[:text], tweet_hash[:user][:time_zone])
           if event.present?
             twitter_user.calendars.each do |calendar|
               user = calendar.user

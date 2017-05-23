@@ -30,7 +30,7 @@ class ScheduleParser
 
       if response[:date].present? && response[:time].present?
         response[:time].length.times do |i|
-          schedule[:datetime] << Time.parse(response[:date][0].strftime('%F') + ' ' + (response[:time][i] - 9.hours).strftime('%T'))
+          schedule[:datetime] << Time.parse(response[:date][0].strftime('%F') + ' ' + response[:time][i].strftime('%T'))
         end
       elsif response[:date].present?
         schedule[:datetime] << Time.parse(response[:date][0].strftime('%F'))

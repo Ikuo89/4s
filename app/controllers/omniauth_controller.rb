@@ -22,7 +22,6 @@ class OmniauthController < ApplicationController
       :state => URI.encode_www_form(:return_url => return_url)
     )
 
-    auth_uri = auth_client.authorization_uri.to_s
     redirect_to auth_client.authorization_uri.to_s
   end
 

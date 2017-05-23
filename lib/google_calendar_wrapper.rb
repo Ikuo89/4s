@@ -92,11 +92,11 @@ class GoogleCalendarWrapper
       description: hash[:description],
       start: {
         date_time: hash[:start].strftime('%Y-%m-%dT%H:%M:%S'),
-        time_zone: 'UTC',
+        time_zone: 'Asia/Tokyo',
       },
       end: {
         date_time: hash[:end].strftime('%Y-%m-%dT%H:%M:%S'),
-        time_zone: 'UTC',
+        time_zone: 'Asia/Tokyo',
       },
     )
 

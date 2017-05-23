@@ -6,9 +6,9 @@ class BatchSerializer
       caller_name = "#{caller_file_name}_#{caller_func_name}#{suffix}"
       file_path = lock_file_path(caller_name)
       File.open(file_path, 'w') do |lock_file|
+        lock_file.sync = true
         if lock_file.flock(File::LOCK_EX|File::LOCK_NB)
           lock_file.puts $$
-          lock_file.flush
           begin
             yield
           rescue => e

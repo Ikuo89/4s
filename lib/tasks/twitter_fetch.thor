@@ -13,11 +13,11 @@ class TwitterFetch < Thor
       twitter = TwitterWrapper.new
       twitter.stream(user_ids) do |tweet_hash|
         twitter_user = TwitterUser.find_by(twitter_com_user_id: tweet_hash[:id])
-        if twitter_user
-          twitter_user = TwitterUser.insert_or_update!(tweet_hash)
-          tweet = twitter_user.twitter_tweets.build(text: tweet_hash[:text])
-          tweet.save!
-        end
+        next if twitter_user.blank?
+
+        twitter_user = TwitterUser.insert_or_update!(tweet_hash)
+        tweet = twitter_user.twitter_tweets.build(text: tweet_hash[:text])
+        tweet.save!
 
         if twitter_user.calendars.present?
           event = Event.parse_from_text(tweet_hash[:text])

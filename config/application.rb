@@ -14,15 +14,13 @@ module ScheduleManagement
 
     config.i18n.default_locale = :ja
 
-    config.logger = Logger.new("log/common-#{Time.now.strftime('%Y%m%d')}.log", 'daily')
-
     config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
       allow do
         origins '*'
         resource '*', :headers => :any, :methods => [:get, :post, :delete]
       end
     end
-
+    config.middleware.use ActionDispatch::Flash
     config.log_formatter = ::Logger::Formatter.new
   end
 end

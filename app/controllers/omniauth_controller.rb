@@ -94,8 +94,8 @@ class OmniauthController < ApplicationController
           line_room = LineRoom.find_or_initialize_by(line_me_room_id: line.room_id)
           line_room.save!
 
-          text = text.utf8mb4_encode
-          talk = line_room.line_room_talks.build(text: line.text)
+          text = line.text.utf8mb4_encode
+          talk = line_room.line_room_talks.build(text: text)
           talk.save!
 
           if /[?&]id=(?<identifier>[^&]+)/ =~ text

@@ -62,6 +62,8 @@ group :development, :test do
 
   # for test
   gem 'rspec-rails'
+
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
 end
 
 group :development do
@@ -78,8 +80,6 @@ group :development do
   gem 'capistrano3-puma'
   gem 'capistrano-rbenv'
   gem 'capistrano-npm'
-
-  gem 'dotenv-rails', require: 'dotenv/rails-now'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

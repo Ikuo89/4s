@@ -1,7 +1,8 @@
 class GooApiWrapper
   class << self
     MAX_RETRY_COUNT = 5
-    def name_entity_extraction(text)
+    def name_entity_extraction(text, time_zone: 'UTC', target_date: nil)
+      target_date = Time.zone.now.in_time_zone(time_zone) if target_date.blank?
       Rails.logger.debug "call: 'https://labs.goo.ne.jp/api/entity' value: #{text}"
 
       result = call_query('https://labs.goo.ne.jp/api/entity', {
@@ -10,6 +11,7 @@ class GooApiWrapper
         sentence: text,
       })
 
+      Rails.logger.debug result
       if result && result[:ne_list].present?
         result[:ne_list].each do |item|
           parsed_item = nil
@@ -24,9 +26,9 @@ class GooApiWrapper
             when 'LOC'
               parsed_item = {location: item[0]}
             when 'DAT'
-              parsed_item = {date: Date.parse2(item[0])}
+              parsed_item = {date: Date.parse2(item[0], time_zone: time_zone, target_date: target_date)}
             when 'TIM'
-              parsed_item = {time: Time.zone.parse(item[0])}
+              parsed_item = {time: item[0].in_time_zone(time_zone)}
             end
           rescue => e
             Rails.logger.warn e

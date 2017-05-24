@@ -1,6 +1,6 @@
 class ScheduleParser
   class << self
-    def parse(original, time_zone = 'UTC')
+    def parse(original, time_zone: 'UTC', target_date: nil)
       text = original
       text = text.gsub(/[\n\r]/, ' ')
       text = text.gsub(/(?<hour>\d{2})(?<minutes>\d{2})[ 　]*[-〜~]/, '\k<hour>:\k<minutes>')
@@ -21,7 +21,7 @@ class ScheduleParser
 
       schedule = {datetime: [], location: '', title: '', description: ''}
       response = {}
-      GooApiWrapper.name_entity_extraction(text) do |item|
+      GooApiWrapper.name_entity_extraction(text, time_zone: time_zone, target_date: target_date) do |item|
         key = item.keys.first
         response[key] = [] if response[key].blank?
         response[key] << item[key]

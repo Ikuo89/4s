@@ -120,7 +120,7 @@ class OmniauthController < ApplicationController
           end
 
           if line_room.calendars.present?
-            event = Event.parse_from_text(text, 'Asia/Tokyo')
+            event = Event.parse_from_text(text, time_zone: 'Asia/Tokyo')
             if event.present?
               line_room.calendars.each do |calendar|
                 user = calendar.user

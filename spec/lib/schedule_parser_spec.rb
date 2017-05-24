@@ -67,4 +67,21 @@ EOS
     schedule = ScheduleParser.parse(original)
     expect(schedule[:datetime]).to eq([Time.zone.parse((Date.today + 1).strftime('%m/%d'))])
   end
+
+  it 'TWITTER3' do
+    original = <<"EOS"
+明日のミュージックステーションに
+AKB48で出演させて頂くのですが
+365日の紙飛行機は
+私1人で歌わせて頂くことになりました。
+
+急なお話に戸惑いもありましたが
+1人でも、この曲が持つメッセージを
+しっかり伝えられるよう
+精一杯歌わせて頂きます。
+EOS
+
+    schedule = ScheduleParser.parse(original, time_zone: 'Tokyo', target_date: Date.parse('2000/1/1'))
+    expect(schedule[:datetime]).to eq([Date.parse('2000/1/2').in_time_zone('Tokyo')])
+  end
 end

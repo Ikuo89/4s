@@ -25,20 +25,34 @@ class TwitterWrapper
     twitter_user_hash(user) if user.present?
   end
 
+  def user_timeline(id, since_id: nil)
+    options = {count: 20}
+    options[:since_id] = since_id if since_id.present?
+    Rails.logger.debug "fetch timeline[#{id}]"
+    Rails.logger.debug options
+    @rest.user_timeline(id, options).each do |tweet|
+      yield tweet_hash(tweet)
+    end
+  end
+
   def stream(ids)
     @streaming.filter(:follow => ids.join(',')) do |object|
       if object.is_a?(Twitter::Tweet)
-        hashed_item = {
-          :id => object.id,
-          :text => object.text.utf8mb4_encode,
-          :user => twitter_user_hash(object.user),
-        }
-        yield hashed_item
+        yield tweet_hash(object)
       end
     end
   end
 
   private
+  def tweet_hash(tweet)
+    {
+      :id => tweet.id,
+      :text => tweet.text.utf8mb4_encode,
+      :created_at => tweet.created_at,
+      :user => twitter_user_hash(tweet.user),
+    }
+  end
+
   def twitter_user_hash(user)
     {
       :id => user.id,

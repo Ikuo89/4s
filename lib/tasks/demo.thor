@@ -65,6 +65,14 @@ class Demo < Thor
     p twitter.user(149692927)
   end
 
+  desc 'twitter timeline', 'test'
+  def twitter_timeline
+    twitter = TwitterWrapper.new
+    twitter.user_timeline(149692927, since_id: 836038367758319617) do |tweet|
+      p tweet
+    end
+  end
+
   desc 'search twitter user', 'test'
   def twitter_user_search
     twitter = TwitterWrapper.new

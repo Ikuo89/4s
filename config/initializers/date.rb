@@ -1,19 +1,20 @@
 class Date
   class << self
-    def parse2(text)
+    def parse2(text, time_zone: 'UTC', target_date: nil)
+      target_date = target_date.in_time_zone if target_date.blank?
       if text =~ /(きょう|今日)/
-        return Date.today
+        return target_date
       elsif text =~ /(あした|明日)/
-        return Date.today + 1
+        return target_date + 1
       end
 
       begin
-        return Date.parse(text)
+        return Date.parse(text).in_time_zone(time_zone)
       rescue ArgumentError
         formats = ['%Y年%m月%d日', '%m月%d日']
         formats.each do |format|
           begin
-            return Date.strptime(text, format)
+            return Date.strptime(text, format).in_time_zone(time_zone)
           rescue ArgumentError
           end
         end

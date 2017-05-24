@@ -7,7 +7,7 @@ class CreateLineRoomTalks < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_foreign_key :line_room_talks, :line_rooms, dependent: :delete
+    add_foreign_key :line_room_talks, :line_rooms, on_delete: :cascade
   end
   def down
     drop_table :line_room_talks

@@ -7,8 +7,8 @@ class CreateUserCalendarsRelations < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_foreign_key :user_calendars_relations, :users, dependent: :delete
-    add_foreign_key :user_calendars_relations, :calendars, dependent: :delete
+    add_foreign_key :user_calendars_relations, :users, on_delete: :cascade
+    add_foreign_key :user_calendars_relations, :calendars, on_delete: :cascade
   end
 
   def down

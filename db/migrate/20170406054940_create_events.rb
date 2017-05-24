@@ -11,7 +11,7 @@ class CreateEvents < ActiveRecord::Migration[5.0]
       t.column :deleted, 'BIGINT', null: false, default: 0
       t.timestamps null: false
     end
-    add_foreign_key :events, :calendars, dependent: :delete
+    add_foreign_key :events, :calendars, on_delete: :cascade
   end
   def down
     drop_table :events

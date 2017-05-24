@@ -7,7 +7,7 @@ class CreateTwitterTweets < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_foreign_key :twitter_tweets, :twitter_users, dependent: :delete
+    add_foreign_key :twitter_tweets, :twitter_users, on_delete: :cascade
   end
   def down
     drop_table :twitter_tweets

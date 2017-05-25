@@ -29,6 +29,12 @@ class TwitterWrapper
     twitter_user_hash(user) if user.present?
   end
 
+  def search(query)
+    @rest.search(query, {count: 100, lang: 'ja'}).each do |tweet|
+      yield tweet_hash(tweet)
+    end
+  end
+
   def user_timeline(id, since_id: nil)
     options = {count: 20}
     options[:since_id] = since_id if since_id.present?

@@ -13,4 +13,9 @@ class TwitterFetch < Thor
   def fetch
     TwitterService.fetch_user_timeline
   end
+
+  desc 'search', 'start fetch'
+  def search
+    
+  end
 end

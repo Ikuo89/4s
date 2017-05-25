@@ -73,6 +73,14 @@ class Demo < Thor
     end
   end
 
+  desc 'twitter search', 'test'
+  def twitter_search
+    twitter = TwitterWrapper.new
+    twitter.search('"00から"') do |tweet|
+      p tweet
+    end
+  end
+
   desc 'search twitter user', 'test'
   def twitter_user_search
     twitter = TwitterWrapper.new

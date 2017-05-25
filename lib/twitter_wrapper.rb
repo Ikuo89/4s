@@ -21,7 +21,11 @@ class TwitterWrapper
   end
 
   def user(query)
-    user = @rest.user(query)
+    user = begin
+      @rest.user(query)
+    rescue Twitter::Error::NotFound
+      raise TwitterUserNotFoundError
+    end
     twitter_user_hash(user) if user.present?
   end
 
@@ -30,8 +34,12 @@ class TwitterWrapper
     options[:since_id] = since_id if since_id.present?
     Rails.logger.debug "fetch timeline[#{id}]"
     Rails.logger.debug options
-    @rest.user_timeline(id, options).each do |tweet|
-      yield tweet_hash(tweet)
+    begin
+      @rest.user_timeline(id, options).each do |tweet|
+        yield tweet_hash(tweet)
+      end
+    rescue Twitter::Error::NotFound
+      raise TwitterUserNotFoundError
     end
   end
 
@@ -64,3 +72,4 @@ class TwitterWrapper
     }
   end
 end
+class TwitterUserNotFoundError < StandardError; end

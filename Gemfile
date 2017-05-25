@@ -59,6 +59,9 @@ group :development, :test do
 
   # for test
   gem 'rspec-rails'
+  gem "factory_girl_rails"
+  gem 'faker'
+  gem 'gimei'
 
   gem 'dotenv-rails', require: 'dotenv/rails-now'
 end

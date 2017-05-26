@@ -60,6 +60,7 @@ class TwitterService
       tweet = twitter_user.twitter_tweets.build(
         twitter_com_tweet_id: tweet_hash[:id],
         text: tweet_hash[:text],
+        created_at: tweet_hash[:created_at],
       )
       tweet.save!
 

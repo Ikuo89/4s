@@ -68,7 +68,7 @@ class Event < ApplicationRecord
 
     def parse_from_text(text, time_zone: 'UTC', target_date: nil)
       schedule = ScheduleParser.parse(text, time_zone: time_zone, target_date: target_date)
-      if schedule[:datetime].blank?
+      if schedule[:title].blank? || schedule[:datetime].blank?
         return nil
       end
 

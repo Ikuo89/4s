@@ -32,8 +32,6 @@ class ScheduleParser
         response[:time].length.times do |i|
           schedule[:datetime] << (response[:date][0].strftime('%F') + ' ' + response[:time][i].strftime('%T')).in_time_zone(time_zone)
         end
-      elsif response[:date].present?
-        schedule[:datetime] << response[:date][0].strftime('%F').in_time_zone(time_zone)
       end
 
       locations = []
@@ -41,12 +39,19 @@ class ScheduleParser
       locations << response[:artifact] if response[:artifact].present?
       schedule[:location] = locations.flatten.uniq.join(' ')
 
-      title = []
-      title << response[:location] if response[:location].present?
-      title << response[:artifact] if response[:artifact].present?
-      title << response[:person] if response[:person].present?
-      title << response[:organization] if response[:organization].present?
-      schedule[:title] = title.flatten.uniq.join(' ')
+      title_tmp = []
+      title_tmp << response[:location] if response[:location].present?
+      title_tmp << response[:artifact] if response[:artifact].present?
+      title_tmp << response[:person] if response[:person].present?
+      title_tmp << response[:organization] if response[:organization].present?
+      mecab_results = MecabWrapper.parse(title_tmp.flatten.uniq.join(' '))
+
+      title_tmp = []
+      mecab_results.each do |word|
+        title_tmp << word.word if word.wikipedia?
+      end
+
+      schedule[:title] = title_tmp.flatten.uniq.join(' ')
       schedule[:description] = original
 
       schedule

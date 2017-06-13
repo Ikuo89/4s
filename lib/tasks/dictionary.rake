@@ -29,26 +29,26 @@ namespace :dictionary do
         end
       end
 
-      open(expanded_path).each do |title|
-        title.strip!
+      # open(expanded_path).each do |title|
+      #   title.strip!
+      #
+      #   next if title.length < 2
+      #   next if title =~ %r(^[+-.$()?*/&%!"'_,]+)
+      #   next if title =~ /^[-.0-9]+$/
+      #   next if title =~ /曖昧さ回避/
+      #   next if title =~ /_\(/
+      #   next if title =~ /^PJ:/
+      #   next if title =~ /の登場人物/
+      #   next if title =~ /一覧/
+      #   next if title =~ /^(\p{Hiragana}|\p{Katakana})$/
+      #
+      #   DictionaryWord.bulk_insert_pool(title.gsub('_', ' '))
+      #   if DictionaryWord.bulk_insert_items_count > 10000
+      #     DictionaryWord.bulk_insert_execute
+      #   end
+      # end
 
-        next if title.length < 2
-        next if title =~ %r(^[+-.$()?*/&%!"'_,]+)
-        next if title =~ /^[-.0-9]+$/
-        next if title =~ /曖昧さ回避/
-        next if title =~ /_\(/
-        next if title =~ /^PJ:/
-        next if title =~ /の登場人物/
-        next if title =~ /一覧/
-        next if title =~ /^(\p{Hiragana}|\p{Katakana})$/
-
-        DictionaryWord.bulk_insert_pool(title.gsub('_', ' '))
-        if DictionaryWord.bulk_insert_items_count > 10000
-          DictionaryWord.bulk_insert_execute
-        end
-      end
-
-      DictionaryWord.bulk_insert_execute
+      # DictionaryWord.bulk_insert_execute
 
       CSV.open("#{dir}custom.csv", 'w') do |csv|
         open(expanded_path).each do |title|
@@ -71,7 +71,7 @@ namespace :dictionary do
         end
       end
 
-      %x(#{Settings.mecab.mecab_dict_index_path} -d #{Settings.mecab.ipadic_path} -u #{dir}custom.dic -f utf-8 -t utf-8 #{dir}custom.csv)
+      %x(#{Settings.mecab.mecab_dict_index_path} -d #{Settings.mecab.ipadic_path} -u #{Settings[:mecab][:userdic]} -f utf-8 -t utf-8 #{dir}custom.csv)
 
     rescue => e
       Rails.logger.error e

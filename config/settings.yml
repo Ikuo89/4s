@@ -16,3 +16,5 @@ twitter:
 mecab:
   mecab_dict_index_path: /usr/local/libexec/mecab/mecab-dict-index
   ipadic_path: /usr/local/lib/mecab/dic/ipadic
+  neologd: /usr/local/lib/mecab/dic/mecab-ipadic-neologd/
+  userdic: /usr/local/lib/mecab/dic/custom.dic

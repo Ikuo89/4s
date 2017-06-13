@@ -96,4 +96,11 @@ class Demo < Thor
       TwitterUser.insert_or_update!(user)
     end
   end
+
+  desc 'test mecab[text]', 'test'
+  def test_mecab(text)
+    word = MecabWrapper.parse(text)
+    p word
+    p word[0].wikipedia?
+  end
 end

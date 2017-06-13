@@ -20,8 +20,9 @@ describe "schedule_parser" do
 EOS
 
     schedule = ScheduleParser.parse(original)
+    p schedule
     expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d 14:00')), Time.zone.parse(date.strftime('%m/%d 18:15'))])
-    expect(schedule[:title]).to include('新中野')
+    expect(schedule[:title]).to include('中部すこやか福祉センター')
   end
 
   it 'LINE2' do

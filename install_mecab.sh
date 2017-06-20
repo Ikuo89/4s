@@ -22,9 +22,6 @@ if [ $? -eq 1 ]; then
 fi
 
 cd ~
-mkdir -p downloads
-cd downloads
-rm -rf ./mecab-ipadic-neologd
 git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git
 cd mecab-ipadic-neologd
 ./bin/install-mecab-ipadic-neologd -n

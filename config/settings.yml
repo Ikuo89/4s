@@ -19,4 +19,4 @@ mecab:
   neologd: /usr/local/lib/mecab/dic/mecab-ipadic-neologd/
   userdic: /usr/local/lib/mecab/dic/custom.dic
 python:
-  path: python
+  path: python3

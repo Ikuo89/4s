@@ -40,9 +40,17 @@ class TaggerWrapper
           when 'LOC'
             parsed_item = {location: item[1]}
           when 'DAT'
-            parsed_item = {date: Date.parse2(item[1], time_zone: time_zone, target_date: target_date)}
+            begin
+              parsed_date = Date.parse2(item[1], time_zone: time_zone, target_date: target_date)
+              parsed_item = {date: parsed_date} if parsed_date.present?
+            rescue => e
+            end
           when 'TIM'
-            parsed_item = {time: item[1].in_time_zone(time_zone)}
+            begin
+              parsed_time = item[1].in_time_zone(time_zone)
+              parsed_item = {time: parsed_time} if parsed_time.present?
+            rescue => e
+            end
           end
         rescue => e
           Rails.logger.warn e

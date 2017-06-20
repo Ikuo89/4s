@@ -27,6 +27,31 @@ EOS
   end
 
   it 'LINE2' do
+    original = <<"EOS"
+【定例フットサル】(屋外)
+
+日程:6/10(土)
+時間:16:15-18:15
+会費:500円
+場所:中野区中部すこやか福祉センター
+※最寄り駅:新中野徒歩7分
+※東京都中野区中央三丁目19番1号
+
+参加者はノートに記載してください。
+友達を呼ぶ場合は、人数も記載してください。
+でも、やっぱりドタ参・ドタキャン大歓迎です。
+
+参加予定者は早め早めに参加表明お待ちしてます！
+
+■参加予定0名
+EOS
+
+    schedule = ScheduleParser.parse(original)
+    expect(schedule[:datetime]).to eq([Time.zone.parse('6/10 16:15'), Time.zone.parse(date.strftime('6/10 18:15'))])
+    expect(schedule[:title]).to include('フットサル')
+  end
+
+  it 'LINE3' do
     original = "#{date.strftime('%-m/%-d')} 10:30〜 スタジオノア新宿のB3スタジオで予約取りましたー"
 
     schedule = ScheduleParser.parse(original)

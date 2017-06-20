@@ -5,6 +5,8 @@ describe "schedule_parser" do
 
   it 'LINE1' do
     original = <<"EOS"
+[定例フットサル] (屋外)
+
 日程:#{date.strftime('%-m/%-d')}
 時間:14:00-18:15
 会費:500円
@@ -20,29 +22,15 @@ describe "schedule_parser" do
 EOS
 
     schedule = ScheduleParser.parse(original)
-    p schedule
     expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d 14:00')), Time.zone.parse(date.strftime('%m/%d 18:15'))])
-    expect(schedule[:title]).to include('中部すこやか福祉センター')
+    expect(schedule[:title]).to include('フットサル')
   end
 
   it 'LINE2' do
-    original = <<"EOS"
-#{date.strftime('%-m/%-d')}からの野沢二泊ですが、じゅんくんがインフルエンザの為、急遽一名募集します
-費用は宿代18000円(@9000円)+交通費+リフト代です。
-よろしくお願いします
-EOS
-
-    schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d'))])
-    expect(schedule[:title]).to include('野沢')
-  end
-
-  it 'LINE3' do
     original = "#{date.strftime('%-m/%-d')} 10:30〜 スタジオノア新宿のB3スタジオで予約取りましたー"
 
     schedule = ScheduleParser.parse(original)
     expect(schedule[:datetime]).to eq([Time.zone.parse(date.strftime('%m/%d 10:30'))])
-    expect(schedule[:title]).to include('新宿')
   end
 
   it 'TWITTER1' do
@@ -54,7 +42,7 @@ EOS
 
   it 'TWITTER2' do
     original = <<"EOS"
-明日のミュージックステーションに
+明日の夜7時のミュージックステーションに
 AKB48で出演させて頂くのですが
 365日の紙飛行機は
 私1人で歌わせて頂くことになりました。
@@ -66,12 +54,12 @@ AKB48で出演させて頂くのですが
 EOS
 
     schedule = ScheduleParser.parse(original)
-    expect(schedule[:datetime]).to eq([Time.zone.parse((Date.today + 1).strftime('%m/%d'))])
+    expect(schedule[:datetime]).to eq([Time.zone.parse((Date.today + 1).strftime('%m/%d 19:00'))])
   end
 
   it 'TWITTER3' do
     original = <<"EOS"
-明日のミュージックステーションに
+明日の夜7時のミュージックステーションに
 AKB48で出演させて頂くのですが
 365日の紙飛行機は
 私1人で歌わせて頂くことになりました。
@@ -83,6 +71,6 @@ AKB48で出演させて頂くのですが
 EOS
 
     schedule = ScheduleParser.parse(original, time_zone: 'Tokyo', target_date: Date.parse('2000/1/1'))
-    expect(schedule[:datetime]).to eq([Date.parse('2000/1/2').in_time_zone('Tokyo')])
+    expect(schedule[:datetime]).to eq([Time.zone.parse('2000/1/2 10:00').in_time_zone('Tokyo')])
   end
 end

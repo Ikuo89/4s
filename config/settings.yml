@@ -18,3 +18,5 @@ mecab:
   ipadic_path: /usr/local/lib/mecab/dic/ipadic
   neologd: /usr/local/lib/mecab/dic/mecab-ipadic-neologd/
   userdic: /usr/local/lib/mecab/dic/custom.dic
+python:
+  path: python

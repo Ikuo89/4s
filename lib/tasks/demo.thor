@@ -48,7 +48,7 @@ class Demo < Thor
 
   desc 'goo_test [text]', 'test'
   def goo_test2(text)
-    p ScheduleParser.parse(text, 'Tokyo')
+    p ScheduleParser.parse(text, time_zone: 'Tokyo')
   end
 
   desc 'tweetstream', 'test'
@@ -102,5 +102,12 @@ class Demo < Thor
     word = MecabWrapper.parse(text)
     p word
     p word[0].wikipedia?
+  end
+
+  desc 'test tagger[text]', 'test'
+  def test_tagger(text)
+    TaggerWrapper.name_entity_extraction(text, time_zone: 'Asia/Tokyo') do |word|
+      p word
+    end
   end
 end

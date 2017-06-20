@@ -1,3 +1,5 @@
 app:
   secret: 'gZGakfbB7PLthQCm'
   full_host: 'http://localhost:3003'
+python:
+  path: python3

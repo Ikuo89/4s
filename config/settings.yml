@@ -13,3 +13,10 @@ twitter:
   consumer_secret: <%= ENV["TWITTER_CONSUMER_SECRET"] %>
   access_token: <%= ENV["TWITTER_ACCESS_TOKEN"] %>
   access_token_secret: <%= ENV["TWITTER_ACCESS_TOKEN_SECRET"] %>
+mecab:
+  mecab_dict_index_path: /usr/local/libexec/mecab/mecab-dict-index
+  ipadic_path: /usr/local/lib/mecab/dic/ipadic
+  neologd: /usr/local/lib/mecab/dic/mecab-ipadic-neologd/
+  userdic: /usr/local/lib/mecab/dic/custom.dic
+python:
+  path: python

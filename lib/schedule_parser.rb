@@ -21,7 +21,7 @@ class ScheduleParser
 
       schedule = {datetime: [], location: '', title: '', description: ''}
       response = {}
-      GooApiWrapper.name_entity_extraction(text, time_zone: time_zone, target_date: target_date) do |item|
+      TaggerWrapper.name_entity_extraction(text, time_zone: time_zone, target_date: target_date) do |item|
         key = item.keys.first
         response[key] = [] if response[key].blank?
         response[key] << item[key]
@@ -32,8 +32,6 @@ class ScheduleParser
         response[:time].length.times do |i|
           schedule[:datetime] << (response[:date][0].strftime('%F') + ' ' + response[:time][i].strftime('%T')).in_time_zone(time_zone)
         end
-      elsif response[:date].present?
-        schedule[:datetime] << response[:date][0].strftime('%F').in_time_zone(time_zone)
       end
 
       locations = []
@@ -41,12 +39,12 @@ class ScheduleParser
       locations << response[:artifact] if response[:artifact].present?
       schedule[:location] = locations.flatten.uniq.join(' ')
 
-      title = []
-      title << response[:location] if response[:location].present?
-      title << response[:artifact] if response[:artifact].present?
-      title << response[:person] if response[:person].present?
-      title << response[:organization] if response[:organization].present?
-      schedule[:title] = title.flatten.uniq.join(' ')
+      title_tmp = []
+      title_tmp << response[:artifact] if response[:artifact].present?
+      title_tmp << response[:person] if response[:person].present?
+      title_tmp << response[:organization] if response[:organization].present?
+
+      schedule[:title] = title_tmp.flatten.uniq.join(' ')
       schedule[:description] = original
 
       schedule

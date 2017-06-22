@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/healthcheck', to: 'healthcheck#check'
+
   scope :api do
     get '/resource/error_message.js', to: 'resource#error_message'
 

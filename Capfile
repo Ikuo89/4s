@@ -38,7 +38,7 @@ require 'capistrano/puma'
 install_plugin Capistrano::Puma  # Default puma tasks
 install_plugin Capistrano::Puma::Workers  # if you want to control the workers (in cluster mode)
 
-require "capistrano/npm"
+require 'capistrano/yarn'
 
 require "whenever/capistrano"
 

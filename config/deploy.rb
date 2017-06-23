@@ -39,9 +39,9 @@ set :prune_bundler, true
 namespace :deploy do
   task :build_angular do
     on roles(:web) do
-      execute "cd #{release_path};npm run build"
+      execute "cd #{release_path};yarn run build"
     end
   end
 
-  after 'npm:install', 'deploy:build_angular'
+  after 'yarn:install', 'deploy:build_angular'
 end

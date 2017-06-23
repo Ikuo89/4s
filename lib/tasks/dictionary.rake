@@ -95,7 +95,7 @@ namespace :dictionary do
     end
   end
 
-  task fetch_mecab_userdic: :common do
+  task fetch_mecab_userdic: :environment do
     begin
       dir = "#{Rails.root}/tmp/dictionary/"
       FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)

@@ -2,12 +2,12 @@ require 'open-uri'
 require 'zlib'
 require 'csv'
 require 'fileutils'
-namespace :dictionary do
 
+namespace :dictionary do
   task update: :environment do
     download_path = 'https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-all-titles-in-ns0.gz'
 
-    dir = "#{Rails.root}/tmp/dictionary_manage/"
+    dir = "#{Rails.root}/tmp/dictionary/"
     FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)
 
     downloaded_path = dir + File.basename(download_path)
@@ -54,6 +54,7 @@ namespace :dictionary do
         open(expanded_path).each do |title|
           title.strip!
 
+          next if title.length < 2
           next if title =~ %r(^[+-.$()?*/&%!"'_,]+)
           next if title =~ /^[-.0-9]+$/
           next if title =~ /曖昧さ回避/
@@ -64,10 +65,8 @@ namespace :dictionary do
 
           title_length = title.length
 
-          if title_length > 3
-            score = [-36000.0, -400 * (title_length ** 1.5)].max.to_i
-            csv << [title, nil, nil, score, '名詞', '一般', '*', '*', '*', '*', title, '*', '*', 'wikipedia']
-          end
+          score = [-36000.0, -400 * (title_length ** 1.5)].max.to_i
+          csv << [title, nil, nil, score, '名詞', '一般', '*', '*', '*', '*', title, '*', '*', 'wikipedia']
         end
       end
 

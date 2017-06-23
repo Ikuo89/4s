@@ -50,6 +50,8 @@ gem 'line-bot-api'
 # twitter api sdk
 gem 'twitter'
 
+gem 'aws-sdk', '~> 2'
+
 # for cors
 gem 'rack-cors', :require => 'rack/cors'
 

@@ -122,7 +122,7 @@ def sent2tokens(sent):
 
 
 
-m = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd/")
+m = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd/ -u /usr/local/lib/mecab/dic/custom.dic")
 
 text = sys.argv[1]
 text = mojimoji.zen_to_han(text, kana=False)

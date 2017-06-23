@@ -36,7 +36,6 @@ class ScheduleParser
 
       locations = []
       locations << response[:location] if response[:location].present?
-      locations << response[:artifact] if response[:artifact].present?
       schedule[:location] = locations.flatten.uniq.join(' ')
 
       title_tmp = []

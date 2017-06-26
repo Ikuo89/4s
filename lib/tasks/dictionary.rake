@@ -49,6 +49,7 @@ namespace :dictionary do
           next if title =~ /^PJ:/
           next if title =~ /の登場人物/
           next if title =~ /一覧/
+          next if title =~ /月.+日/
           next if title =~ /^(\p{Hiragana}|\p{Katakana})$/
 
           title_length = title.length

@@ -40,10 +40,11 @@ namespace :dictionary do
       CSV.open("#{dir}custom.csv", 'w') do |csv|
         open(expanded_path).each do |title|
           title.strip!
+          title = title.gsub(/[!?]/, '')
 
           next if title.length < 4
           next if title =~ %r(^[+-.$()?*/&%!"'_,]+)
-          next if title =~ /^[-.a-zA-Z0-9]+$/
+          next if title =~ /^[-.:a-zA-Z0-9]+$/
           next if title =~ /曖昧さ回避/
           next if title =~ /_\(/
           next if title =~ /^PJ:/

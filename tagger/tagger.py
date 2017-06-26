@@ -23,6 +23,9 @@ def is_kanji_time(ch):
 def is_kanji_date(ch):
     return ch in "月日"
 
+def is_kanji_location(ch):
+    return ch in "館駅場所区市町村港室"
+
 def get_character_type(ch):
     if ch.isspace():
         return 'ZSPACE'
@@ -38,6 +41,8 @@ def get_character_type(ch):
         return 'KANTIME'
     elif is_kanji_date(ch):
         return 'KANDATE'
+    elif is_kanji_location(ch):
+        return 'KANLOC'
     else:
         return 'OTHER'
 
@@ -143,7 +148,7 @@ text = re.sub(r'[）]', ' ) ', text)
 text = re.sub(r'[／]', '/', text)
 text = re.sub(r'[!?]', '', text)
 text = re.sub(r'[^0-9](?P<hour>\d{2})(?P<minutes>\d{2})[ 　]*[-〜~]', '\g<hour>:\g<minutes>〜', text)
-text = re.sub(r'(?P<hour>\d{2}):(?P<minutes>\d{2})', ' \g<hour>:\g<minutes> ', text)
+text = re.sub(r'(?P<hour>\d{2}):(?P<minutes>\d{2})', ' \g<hour> : \g<minutes> ', text)
 text = re.sub(r'(?P<year>\d{2,4})[\/.-](?P<month>\d{1,2})[\/.-](?P<day>\d{1,2})', ' \g<year>年 \g<month>月 \g<day>日 ', text)
 text = re.sub(r'(?P<month>\d{1,2})[\/.-](?P<day>\d{1,2})', ' \g<month>月 \g<day>日 ', text)
 parsed = m.parse(text)
